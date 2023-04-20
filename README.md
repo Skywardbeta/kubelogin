@@ -8,6 +8,5 @@ Here is an example of Kubernetes authentication with the Google Identity Platfor
 
 Kubelogin is designed to run as a [client-go credential plugin](https://kubernetes.io/docs/reference/access-authn-authz/authentication/#client-go-credential-plugins).
 When you run kubectl, kubelogin opens the browser and you can log in to the provider.
-Then kubelogin gets a token from the provider and kubectl access Kubernetes APIs with the token.
-Take a look at the diagram:
+Then kubelogin gets a token from the provider and kubectl access Kubernetes APIs with the token
 
