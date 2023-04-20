@@ -1,0 +1,42 @@
+name: system-test
+
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - .github/workflows/system-test.yaml
+      - system_test/**
+      - pkg/**
+      - go.*
+  push:
+    branches:
+      - master
+    paths:
+      - .github/workflows/system-test.yaml
+      - system_test/**
+      - pkg/**
+      - go.*
+
+jobs:
+  system-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.20.3
+          cache: true
+
+      # for certutil
+      # https://packages.ubuntu.com/xenial/libnss3-tools
+      - run: sudo apt update
+      - run: sudo apt install -y libnss3-tools
+      - run: mkdir -p ~/.pki/nssdb
+
+      - run: echo '127.0.0.1 dex-server' | sudo tee -a /etc/hosts
+
+      - run: make -C system_test -j3
+
+      - run: make -C system_test logs
+        if: always()
